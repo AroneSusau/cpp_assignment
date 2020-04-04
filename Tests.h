@@ -16,15 +16,6 @@ class Tests {
         // Tests Trail class.
         void testTrail();
 
-        // Tests MazeSolver class.
-        void testMazeSolver();        
-
-        // Tests ReadMaze method.
-        void testReadMaze();
-        
-        // Tests PrintMaze method.
-        void testPrintMaze();
-
 };
 
 #endif

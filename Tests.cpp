@@ -12,9 +12,6 @@ void Tests::runTestSuite() {
     std::cout << "TESTING PROGRAM" << std::endl;
     testBreadcrumb();
     testTrail();
-    testMazeSolver();
-    testReadMaze();
-    testPrintMaze();
     std::cout << "DONE TESTING" << std::endl << std::endl;
 }
 
@@ -38,47 +35,45 @@ void Tests::testBreadcrumb() {
 
 void Tests::testTrail() {
     std::cout << "TESTING TRAIL" << std::endl;
+    Util* util = new Util();
 
     // Make a simple trail, should be empty size
     Trail* trail = new Trail();
-    std::cout << "Trail size: " << trail->size() << std::endl;
+    std::cout << "Trail size: " << trail->size() << " - expecting 0." << std::endl;
 
     // Add a breadcrumb to the trail, print size, check contains
     Breadcrumb* b1 = new Breadcrumb(1, 1, false);
     trail->addCopy(b1);
-    std::cout << "Trail size: " << trail->size() << std::endl;
-    std::cout << "Contains (0,0): " << trail->contains(0,0) << std::endl;
-    std::cout << "Contains (1,1): " << trail->contains(1,1) << std::endl;
+    std::cout << "Trail size: " << trail->size() << " - expecting 1." << std::endl;
+    std::cout << "Contains (0,0): " << trail->contains(0,0) << " - expecting 0." << std::endl;
+    std::cout << "Contains (1,1): " << trail->contains(1,1) << " - expecting 1." << std::endl;
 
     // Add second breadcrumb
     Breadcrumb* b2 = new Breadcrumb(0, 0, true);
     trail->addCopy(b2);
-    std::cout << "Trail size: " << trail->size() << std::endl;
-    std::cout << "Contains (0,0): " << trail->contains(0,0) << std::endl;
-    std::cout << "Contains (1,1): " << trail->contains(1,1) << std::endl;
+    std::cout << "Trail size: " << trail->size() << " - expecting 2." << std::endl;
+    std::cout << "Contains (0,0): " << trail->contains(0,0) << " - expecting 1." << std::endl;
+    std::cout << "Contains (1,1): " << trail->contains(1,1) << " - expecting 1." << std::endl;
 
     // Test Get-ith - should be 0,0,true
     Breadcrumb* getB = trail->getPtr(1);
     std::cout << getB->getX() << ",";
     std::cout << getB->getY() << ",";
-    std::cout << getB->isStale() << std::endl;
+    std::cout << getB->isStale() << " - expecting 1,1,1" << std::endl;
 
     // Print out the trail
-    std::cout << "PRINTING OUT A TRAIL IS AN EXERCISE FOR YOU TO DO" << std::endl;
+    std::cout << "PRINTING OUT TRAIL" << std::endl;
+    int length = trail->size();
+    
+    for (int i = 0; i < length; ++i) {
+        Breadcrumb* b = trail->getPtr(i);
+        std::cout << b->getX() << ",";
+        std::cout << b->getY() << ",";
+        std::cout << b->isStale() << std::endl;
+    }
 
+    std::cout << "Expecting \n1,1,0\n0,0,1" << std::endl;
+
+    delete util;
     delete trail;
-}
-
-void Tests::testMazeSolver() {
-    std::cout << "TESTING MAZE SOLVER" << std::endl;
-}
-
-void Tests::testReadMaze() {
-    std::cout << "TESTING READ MAZE" << std::endl;
-
-}
-
-void Tests::testPrintMaze() {
-    std::cout << "TESTING PRINT MAZE" << std::endl;
-
 }

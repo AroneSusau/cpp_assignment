@@ -18,11 +18,16 @@ void Util::readMazeStdin(Maze maze) {
     }
 }
 
-void Util::printMazeStdout(Maze maze, Trail* solution) {
+void Util::printMazeStdout(Maze maze, Trail* solution) {    
     for (int row = 0; row < MAZE_DIM; ++row) {
         for (int col = 0; col < MAZE_DIM; ++col) {
-            if (maze[row][col]) {
-                std::cout << maze[row][col];
+            int index = row * col;
+            bool pathExistsAndNotStale = 
+                solution->contains(row, col) 
+                && !solution->getPtr(index)->isStale();
+            
+            if (pathExistsAndNotStale) {
+                maze[row][col] = ROUTE;
             }
         }
         std::cout << std::endl;
