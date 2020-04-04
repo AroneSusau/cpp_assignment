@@ -1,3 +1,12 @@
+/* * * * * * * * * * * * * *
+Assignment 1 COSC1070
+
+Author: Arone Susau
+Student#: S3728977
+Year: 2020
+
+Program description can be found in README.md
+* ** * * * * * * * * * * */
 
 #include <iostream>
 #include <string>
