@@ -19,17 +19,27 @@ void Util::readMazeStdin(Maze maze) {
 }
 
 void Util::printMazeStdout(Maze maze, Trail* solution) {    
-    for (int row = 0; row < MAZE_DIM; ++row) {
-        for (int col = 0; col < MAZE_DIM; ++col) {
-            int index = row * col;
-            bool pathExistsAndNotStale = 
-                solution->contains(row, col) 
-                && !solution->getPtr(index)->isStale();
-            
-            if (pathExistsAndNotStale) {
-                maze[row][col] = ROUTE;
+    if (solution->size() > 0) {
+        
+        for (int row = 0; row < MAZE_DIM; ++row) {
+            for (int col = 0; col < MAZE_DIM; ++col) {
+                
+                int index = row * col;
+                bool pathExistsAndNotStale = 
+                    solution->contains(row, col) 
+                    && !solution->getPtr(index)->isStale();
+                
+                if (pathExistsAndNotStale) {
+                    std::cout << ROUTE;
+                } else {
+                    std::cout << maze[row][col];
+                }
+                
             }
+            std::cout << std::endl;
         }
-        std::cout << std::endl;
+
+    } else {
+        std::cout << "ERROR: Invalid maze passed in." << std::endl;
     }
 }

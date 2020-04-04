@@ -2,6 +2,8 @@
 #ifndef COSC_ASS_ONE_PARTICLE_FILTER
 #define COSC_ASS_ONE_PARTICLE_FILTER
 
+#include <string>
+
 #include "Breadcrumb.h"
 #include "Trail.h"
 #include "Types.h"
@@ -41,6 +43,22 @@ private:
    /*                                           */
    /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
    /*                                           */
+
+   // Flag if error discovered in maze.
+   bool error;
+
+   // Ensure input maze contains an S and E position.
+   void validateStartingPositions(Maze maze);
+
+   // Ensure input maze contains only legal characters.
+   void validateCharacters(Maze maze);
+
+   // Resets solution.
+   void resetsSolution();
+
+   // Sets first trail breadcrumb to S position.
+   void setStartingPosition(Maze maze, Breadcrumb* position);
+
 };
 
 #endif // COSC_ASS_ONE_PARTICLE_FILTER
