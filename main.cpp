@@ -18,8 +18,8 @@ Program description can be found in README.md
 
 int main(int argc, char** argv) {
     //Tests - If commenting out, dont forget the delete tests too.
-    Tests* tests = new Tests();
-    tests->runTestSuite();
+    // Tests* tests = new Tests();
+    // tests->runTestSuite();
 
     // Load Maze from stdin
     Maze maze;
@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
 
     delete solver;
     delete util;
-    delete tests;
+    // delete tests;
 
     return EXIT_SUCCESS;
 }
