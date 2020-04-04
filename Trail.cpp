@@ -21,7 +21,12 @@ Breadcrumb* Trail::getPtr(int i) {
 }
 
 void Trail::addCopy(Breadcrumb* t) {
-   breadcrumbs[length] = t;
+   Breadcrumb* cloneBreadcrumb = new Breadcrumb(
+      t->getX(),
+      t->getY(),
+      t->isStale());
+
+   breadcrumbs[length] = cloneBreadcrumb;
    length += 1;
 }
 

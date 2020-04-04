@@ -17,5 +17,14 @@ void MazeSolver::solve(Maze maze) {
 }
 
 Trail* MazeSolver::getSolution() {
-   return solution;
+   Trail* cloneTrail = new Trail();
+
+   int length = solution->size();
+
+   for (int i = 0; i < length; i++) {
+      Breadcrumb* b = solution->getPtr(i);
+      cloneTrail->addCopy(b);
+   }
+   
+   return cloneTrail;
 }
