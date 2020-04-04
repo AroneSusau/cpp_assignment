@@ -53,6 +53,15 @@ private:
    // Ensure input maze contains only legal characters.
    void validateCharacters(Maze maze);
 
+   // Checks if a location contains a valid position to move to.
+   bool checkNewPosition(int x, int y, Maze maze);
+
+   // If trail has no breadcrumbs for our current location.
+   void addBreadcrumb(int x, int y, Breadcrumb* currentPosition); 
+
+   // TMP - PLEASE DELETE.
+   void outputText(std::string prompt);
+
    // Resets solution.
    void resetsSolution();
 

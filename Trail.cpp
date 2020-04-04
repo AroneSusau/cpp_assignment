@@ -1,7 +1,9 @@
 
 #include "Trail.h"
 
-Trail::Trail() {}
+Trail::Trail():
+   breadcrumbs()
+{}
 
 Trail::~Trail() {
    for (size_t i = 0; i < length; i++) {
