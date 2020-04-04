@@ -1,13 +1,15 @@
 
 #include "MazeSolver.h"
+#include "Trail.h"
+#include "Types.h"
 
-
-MazeSolver::MazeSolver() {
-   // TODO
-}
+MazeSolver::MazeSolver() {}
 
 MazeSolver::~MazeSolver() {
-   // TODO delete solution;
+   if (solution != nullptr) {
+      delete solution;
+      solution = nullptr;
+   }
 }
 
 void MazeSolver::solve(Maze maze) {
@@ -15,6 +17,5 @@ void MazeSolver::solve(Maze maze) {
 }
 
 Trail* MazeSolver::getSolution() {
-   // TODO
-   return nullptr;
+   return solution;
 }

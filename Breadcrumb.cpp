@@ -22,5 +22,5 @@ bool Breadcrumb::isStale() {
 }
 
 void Breadcrumb::setStale(bool stale) {
-   stale = stale;
+   this->stale = stale;
 }

@@ -7,6 +7,7 @@ Trail::~Trail() {
    for (size_t i = 0; i < length; i++) {
       if (breadcrumbs[i] != nullptr) {
          delete breadcrumbs[i];
+         breadcrumbs[i] = nullptr;
       }
    }
 }
