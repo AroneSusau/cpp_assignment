@@ -1,17 +1,22 @@
 #ifndef UTIL_H
 #define UTIL_H
 
-#include "Types.h"
 #include "Trail.h"
+#include "Types.h"
 
 class Util {
-    public: 
+ public:
+  Util();
+  ~Util();
 
-        Util();
-        ~Util();
+  // Read in a maze from standard input.
+  void readMazeStdin(Maze maze);
 
-        void readMazeStdin(Maze maze);
-        void printMazeStdout(Maze maze, Trail* solution);
+  // Print the maze to standard output.
+  void printMazeStdout(Maze maze, Trail* solution);
+
+  // Print out the movement directions to standard output.
+  void printMovementDirections(Trail* solution);
 };
 
 #endif

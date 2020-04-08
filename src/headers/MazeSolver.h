@@ -9,77 +9,72 @@
 #include "Types.h"
 
 class MazeSolver {
-public:
+ public:
+  /*                                           */
+  /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
+  /*                                           */
 
-   /*                                           */
-   /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
-   /*                                           */
+  // Constructor/Destructor
+  MazeSolver();
+  ~MazeSolver();
 
+  // Solve the maze
+  void solve(Maze maze);
 
-   // Constructor/Destructor
-   MazeSolver();
-   ~MazeSolver();
+  // Get a DEEP COPY of the solution
+  Trail* getSolution();
 
-   // Solve the maze
-   void solve(Maze maze);
+  /*                                           */
+  /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
+  /*                                           */
 
-   // Get a DEEP COPY of the solution
-   Trail* getSolution();
+ private:
+  /*                                           */
+  /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
+  /*                                           */
 
-   /*                                           */
-   /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
-   /*                                           */
+  // Trail of breadcrumbs from the start to end
+  Trail* solution;
 
-private:
+  /*                                           */
+  /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
+  /*                                           */
 
-   /*                                           */
-   /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
-   /*                                           */
+  // Pointer to the current position in the maze.
+  Breadcrumb* position;
 
-   // Trail of breadcrumbs from the start to end
-   Trail* solution;
+  // Current x position.
+  int x;
 
+  // Current y position.
+  int y;
 
-   /*                                           */
-   /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
-   /*                                           */
+  // Flag if error discovered in maze.
+  bool error;
 
-   // Pointer to the current position in the maze.
-   Breadcrumb* position;
+  // Ensure input maze contains an S and E position.
+  void validateStartingPositions(Maze maze);
 
-   // Current x position.
-   int x;
+  // Ensure input maze contains only legal characters.
+  void validateCharacters(Maze maze);
 
-   // Current y position.
-   int y;
+  // Checks if a location contains a valid position to move to.
+  bool checkNewPosition(int x, int y, Maze maze);
 
-   // Flag if error discovered in maze.
-   bool error;
+  // Move to new position if an eligable position is found.
+  bool mazeMove(Maze maze);
 
-   // Ensure input maze contains an S and E position.
-   void validateStartingPositions(Maze maze);
+  // Move maze position back to last good position.
+  void startBacktracking(Maze maze);
 
-   // Ensure input maze contains only legal characters.
-   void validateCharacters(Maze maze);
+  // If trail has no breadcrumbs for our current location.
+  void addBreadcrumb(int x, int y);
 
-   // Checks if a location contains a valid position to move to.
-   bool checkNewPosition(int x, int y, Maze maze);
+  // Resets solution.
+  void resetsSolution();
 
-   // Move to new position if an eligable position is found.
-   bool mazeMove(Maze maze);
-
-   // Move maze position back to last good position.
-   void startBacktracking(Maze maze);
-
-   // If trail has no breadcrumbs for our current location.
-   void addBreadcrumb(int x, int y); 
-
-   // Resets solution.
-   void resetsSolution();
-
-   // Sets first trail breadcrumb to S position.
-   void setStartingPosition(Maze maze);
-
+  // Sets first trail breadcrumb to S position.
+  void setStartingPosition(Maze maze);
 };
 
-#endif // COSC_ASS_ONE_PARTICLE_FILTER
+#endif  // COSC_ASS_ONE_PARTICLE_FILTER

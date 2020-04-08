@@ -1,26 +1,14 @@
 
 #include "../headers/Breadcrumb.h"
 
-Breadcrumb::Breadcrumb(int x, int y, bool stale) :
-   x(x),
-   y(y),
-   stale(stale)
-{}
+Breadcrumb::Breadcrumb(int x, int y, bool stale) : x(x), y(y), stale(stale) {}
 
 Breadcrumb::~Breadcrumb() {}
 
-int Breadcrumb::getX() {
-   return x;
-}
+int Breadcrumb::getX() { return x; }
 
-int Breadcrumb::getY() {
-   return y;
-}
+int Breadcrumb::getY() { return y; }
 
-bool Breadcrumb::isStale() {
-   return stale;
-}
+bool Breadcrumb::isStale() { return stale; }
 
-void Breadcrumb::setStale(bool stale) {
-   this->stale = stale;
-}
+void Breadcrumb::setStale(bool stale) { this->stale = stale; }

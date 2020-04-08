@@ -6,55 +6,53 @@
 #include "Types.h"
 
 class Trail {
-public:
+ public:
+  /*                                           */
+  /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
+  /*                                           */
 
-   /*                                           */
-   /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
-   /*                                           */
+  // Constructor/Desctructor.
+  Trail();
+  ~Trail();
 
+  // Number of elements in the Trail
+  int size();
 
-   // Constructor/Desctructor.
-   Trail();
-   ~Trail();
+  // Get a pointer to the i-th trail element in the array - useful for making
+  // breadcrumbs stale.
+  Breadcrumb* getPtr(int i);
 
-   // Number of elements in the Trail
-   int size();
+  // Add a COPY trail element to the BACK of the trail.
+  void addCopy(Breadcrumb* trail);
 
-   // Get a pointer to the i-th trail element in the array - useful for making breadcrumbs stale.
-   Breadcrumb* getPtr(int i);
+  // Check if the trail contain a breadcrumb at the location
+  bool contains(int x, int y);
 
-   // Add a COPY trail element to the BACK of the trail.
-   void addCopy(Breadcrumb* trail);
+  /*                                           */
+  /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
+  /*                                           */
 
-   // Check if the trail contain a breadcrumb at the location
-   bool contains(int x, int y);
+  // Deep copy constructor for trail.
+  Trail(Trail*& trail);
 
-   /*                                           */
-   /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
-   /*                                           */
+  // Returns a pointer to breadcrumb if found at location.
+  Breadcrumb* find(int x, int y);
 
-   // Deep copy constructor for trail.
-   Trail(Trail* &trail);
+ private:
+  /*                                           */
+  /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
+  /*                                           */
 
-   // Returns a pointer to breadcrumb if found at location.
-   Breadcrumb* find(int x, int y);
+  // Trail of breadcrumb objects
+  // You may assume a fixed size for M1 & M2
+  Breadcrumb* breadcrumbs[TRAIL_ARRAY_MAX_SIZE];
 
-private:
-   /*                                           */
-   /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
-   /*                                           */
+  // Number of breadcrumbs currently in the trail
+  int length;
 
-   // Trail of breadcrumb objects
-   // You may assume a fixed size for M1 & M2
-   Breadcrumb* breadcrumbs[TRAIL_ARRAY_MAX_SIZE];
-
-   // Number of breadcrumbs currently in the trail
-   int length;
-
-
-   /*                                           */
-   /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
-   /*                                           */
+  /*                                           */
+  /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
+  /*                                           */
 };
 
-#endif // COSC_ASS_ONE_TRAIL
+#endif  // COSC_ASS_ONE_TRAIL

@@ -2,20 +2,18 @@
 #define TESTS_H
 
 class Tests {
-    public: 
+ public:
+  Tests();
+  ~Tests();
 
-        Tests();
-        ~Tests();
+  // Runs all available tests.
+  void runTestSuite();
 
-        // Runs all available tests.
-        void runTestSuite();
+  // Tests Breadcrumb class.
+  void testBreadcrumb();
 
-        // Tests Breadcrumb class.
-        void testBreadcrumb();
-        
-        // Tests Trail class.
-        void testTrail();
-
+  // Tests Trail class.
+  void testTrail();
 };
 
 #endif
