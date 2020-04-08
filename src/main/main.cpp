@@ -5,7 +5,7 @@ Author: Arone Susau
 Student#: S3728977
 Year: 2020
 
-Program description can be found in README.md
+A short program description can be found in README.md
 * * * * * * * * * * * * * */
 
 #include <iostream>
