@@ -7,7 +7,7 @@
   * [Milestone 4](###Milestone-4)
 * [Describe any issues you encountered](###Describe-any-issues-you-encountered)
 * [Justify choices you made in your software design and implementation](###Justify-choices-you-made-in-your-software-design-and-implementation)
-* [Project Build](##Project-Builds)
+* [Project Build](##Project-Build)
 
 ## Short Description
 For this assignment I tried to seperate most major components into the smallest unit of functionality, or at least within reason, to make testing and troubleshooting the program as easy as possible. You can see this by the many methods I have written for the MazeSolver class. 
@@ -46,7 +46,7 @@ Now, I'm aware that this was probably not the expected approach when solving mil
 
 I also decided to use a MazeManager class to handle storing and updating the maze, I found that this method was much easier and cleaner, especially for debugging any issues I had as I was moving the responsibility for the maze itself into the single class.
 
-### Describe (briefly) any issues you encountered
+### Describe any issues you encountered
 The primary issues I had with this project was figuring out how to read and store the characters in the arrays, especially for milestone 4. I have described above how I tackled that issue.
 
 One issue I kept coming across was having a value that was actually a nullptr where I thought it would have been initialised or filled as a value. I mostly solved this by ensuring I used if statements for null checks and shortciruiting the program appropriately if erroneous input was discovered. 
