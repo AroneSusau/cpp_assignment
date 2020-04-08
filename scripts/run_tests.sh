@@ -12,7 +12,7 @@ then
     # Loop through each test and run it.
     for i in $NUM_TESTS
     do
-        DIR="test_mazes/test${i}"
+        DIR="tests/t${i}"
         OUTPUT=$DIR/program.out
         EXPECTED=$DIR/expected.out
 
@@ -30,7 +30,7 @@ then
         fi
     done
 
-    echo "\nResults - $SUCCESS_COUNT passed tests out of $TEST_LIMIT."
+    echo "\nResult: $SUCCESS_COUNT tests passed out of $TEST_LIMIT."
 
 else
     echo "ERROR: MazeSolver executable does not exist."

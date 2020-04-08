@@ -1,4 +1,4 @@
-vpath %.cpp src/mazesolver
+vpath %.cpp src/main
 
 OBJECTS = main.o Util.o Tests.o MazeSolver.o Trail.o Breadcrumb.o
 
@@ -7,7 +7,7 @@ OBJECTS = main.o Util.o Tests.o MazeSolver.o Trail.o Breadcrumb.o
 all: MazeSolver
 
 test: 
-	sh ./run_tests.sh
+	sh ./scripts/run_tests.sh
 
 clean:
 	rm -f MazeSolver objs/*.o
