@@ -17,7 +17,7 @@ Program description can be found in README.md
 #include "../headers/Tests.h"
 
 int main(int argc, char** argv) {
-    // Tests - If commenting out, dont forget the 'delete tests' too.
+    // Tests - If commenting out, dont forget the 'delete tests' at the bottom too.
     // Tests* tests = new Tests();
     // tests->runTestSuite();
 

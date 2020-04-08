@@ -44,6 +44,15 @@ private:
    /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
    /*                                           */
 
+   // Pointer to the current position in the maze.
+   Breadcrumb* position;
+
+   // Current x position.
+   int x;
+
+   // Current y position.
+   int y;
+
    // Flag if error discovered in maze.
    bool error;
 
@@ -56,17 +65,20 @@ private:
    // Checks if a location contains a valid position to move to.
    bool checkNewPosition(int x, int y, Maze maze);
 
-   // If trail has no breadcrumbs for our current location.
-   void addBreadcrumb(int x, int y, Breadcrumb* &currentPosition); 
+   // Move to new position if an eligable position is found.
+   bool mazeMove(Maze maze);
 
-   // TMP - PLEASE DELETE.
-   void outputText(std::string prompt);
+   // Move maze position back to last good position.
+   void startBacktracking(Maze maze);
+
+   // If trail has no breadcrumbs for our current location.
+   void addBreadcrumb(int x, int y); 
 
    // Resets solution.
    void resetsSolution();
 
    // Sets first trail breadcrumb to S position.
-   void setStartingPosition(Maze maze, Breadcrumb* &position);
+   void setStartingPosition(Maze maze);
 
 };
 

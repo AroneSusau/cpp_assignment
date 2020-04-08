@@ -5,6 +5,9 @@
 
 MazeSolver::MazeSolver() :
    solution(new Trail()),
+   position(nullptr),
+   x(0),
+   y(0),
    error(false)
 {}
 
@@ -16,83 +19,22 @@ MazeSolver::~MazeSolver() {
 }
 
 void MazeSolver::solve(Maze maze) {
-
-   Breadcrumb* currentPosition = nullptr;
-
-   // Validation will flag errors and skips solving.
    validateStartingPositions(maze);
    validateCharacters(maze);
 
    if (!error) {
-      // Starting values.
-      setStartingPosition(maze, currentPosition);
-      int x = currentPosition->getX();
-      int y = currentPosition->getY();
-      bool exit = false;
-      
-      // Directional values.
-      int directions = 4;
-      int xMove[] = {0, +1, 0, -1};
-      int yMove[] = {-1, 0, +1, 0};
-
-      // Complete flag.
       bool endNotReached = maze[y][x] != 'E';
 
-      while (endNotReached && !exit) {
+      setStartingPosition(maze);
 
-         bool canMove = false;
-         bool searching = true;
-         int index = 0;
+      while (endNotReached && !error) {
 
-         //outputText("ADDING BREADCRUMB");
-         addBreadcrumb(x, y, currentPosition);
-         
-         // Look for the first available stop to move, then move there.
-         while (searching && index < directions) {
-            int newX = x + xMove[index];
-            int newY = y + yMove[index];
-            bool moveable = checkNewPosition(newX, newY, maze);
-            
-            if (moveable) {
-               x = newX;
-               y = newY;
-               canMove = true;
-               searching = false;
-            }
+         addBreadcrumb(x, y);
 
-            ++index;
-         }
+         bool canMove = mazeMove(maze);
 
          if (!canMove) {
-            //outputText("NO MOVEABLE DIRECTION FOUND");
-            bool searchingGoodBreadcrum = true;
-            currentPosition->setStale(true);
-            int lastIndex = solution->size() - 2;
-
-            while (searchingGoodBreadcrum && lastIndex > -1) {
-               //outputText("MOVING BACK");
-               Breadcrumb* lastGoodPosition = solution->getPtr(lastIndex);
-               bool isGood = !lastGoodPosition->isStale();
-
-               if (isGood) {
-                  //outputText("GOOD POSITION FOUND");
-                  searchingGoodBreadcrum = false;
-                  currentPosition = lastGoodPosition;
-                  x = currentPosition->getX();
-                  y = currentPosition->getY();
-               } else {
-                  //outputText("NO GOOD INDEX FOUND");
-                  --lastIndex;
-               }
-            }
-
-            if (lastIndex == -1) {
-               //outputText("ERROR, NO INDEXS LEFT TO MOVE BACK TO");
-               error = true;
-               exit = true;
-               delete solution;
-               solution = nullptr;
-            }
+            startBacktracking(maze);
          }
 
          endNotReached = maze[y][x] != 'E';
@@ -100,10 +42,69 @@ void MazeSolver::solve(Maze maze) {
    }
 }
 
-void MazeSolver::addBreadcrumb(int x, int y, Breadcrumb* &currentPosition) {
+bool MazeSolver::mazeMove(Maze maze) {
+   // Directional values in order: NORTH, SOUTH, EAST, WEST.
+   int directions = 4;
+   int xMove[] = {0, +1, 0, -1};
+   int yMove[] = {-1, 0, +1, 0};
+
+   bool searching = true;
+   bool canMove = false;
+   int index = 0;
+
+   while (searching && index < directions) {
+      int newX = x + xMove[index];
+      int newY = y + yMove[index];
+      bool moveable = checkNewPosition(newX, newY, maze);
+      
+      if (moveable) {
+         x = newX;
+         y = newY;
+         canMove = true;
+         searching = false;
+      }
+
+      ++index;
+   }
+
+   return canMove;
+}
+
+void MazeSolver::addBreadcrumb(int x, int y) {
    if (!solution->contains(x, y)) {
-      currentPosition = new Breadcrumb(x, y, false);
-      solution->addCopy(currentPosition);
+      position = new Breadcrumb(x, y, false);
+      solution->addCopy(position);
+   }
+}
+
+void MazeSolver::startBacktracking(Maze maze) {
+   int lastIndex = solution->size() - 1;
+   
+   bool searchingGoodBreadcrum = true;
+   bool noMoreFreshCrumbs = lastIndex == -1;
+
+   position->setStale(true);
+
+   while (searchingGoodBreadcrum && lastIndex >= 0) {
+      Breadcrumb* lastGoodPosition = solution->getPtr(lastIndex);
+      bool isGood = !lastGoodPosition->isStale();
+
+      if (isGood) {
+         searchingGoodBreadcrum = false;
+         position = lastGoodPosition;
+         x = position->getX();
+         y = position->getY();
+      } else {
+         --lastIndex;
+      }
+
+      noMoreFreshCrumbs = lastIndex == -1;
+   }
+
+   if (noMoreFreshCrumbs) {
+      error = true;
+      delete solution;
+      solution = nullptr;
    }
 }
 
@@ -129,13 +130,13 @@ void MazeSolver::validateStartingPositions(Maze maze) {
 }
 
 bool MazeSolver::checkNewPosition(int x, int y, Maze maze) {
-   bool xInBounds = 0 < x && x < MAZE_DIM;
-   bool yInBounds = 0 < y && y < MAZE_DIM;
-   bool validMazeChar = maze[y][x] == OPEN || maze[y][x] == 'E';
-   bool empty = solution->contains(x, y);
+   bool xInBounds = 0 <= x && x < MAZE_DIM;
+   bool yInBounds = 0 <= y && y < MAZE_DIM;
+   bool validMazeChar = maze[y][x] == OPEN || maze[y][x] == 'E' || maze[y][x] == 'S';
+   bool empty = !solution->contains(x, y);
    bool result = false;
    
-   if (xInBounds && yInBounds && validMazeChar && !empty) {
+   if (xInBounds && yInBounds && validMazeChar && empty) {
       result = true;
    }
 
@@ -160,37 +161,29 @@ void MazeSolver::validateCharacters(Maze maze) {
    }
 }
 
-void MazeSolver::setStartingPosition(Maze maze, Breadcrumb* &position) {
+void MazeSolver::setStartingPosition(Maze maze) {
    for (int row = 0; row < MAZE_DIM; ++row) {
       for (int col = 0; col < MAZE_DIM; ++col) {
          char point = maze[row][col];
          
          if (point == 'S') {
             Breadcrumb* b = new Breadcrumb(col, row, false);
+            
             solution->addCopy(b);
             position = b;
+            x = position->getX();
+            y = position->getY();
          }
       }
    }
 }
 
 Trail* MazeSolver::getSolution() {
-   Trail* cloneTrail = new Trail();
+   Trail* clone = nullptr;
 
    if (solution != nullptr) {
-      int length = solution->size();
-
-      for (int i = 0; i < length; i++) {
-         Breadcrumb* b = solution->getPtr(i);
-         cloneTrail->addCopy(b);
-      }
-   } else {
-      cloneTrail = nullptr;
+      clone = new Trail(solution);
    }
    
-   return cloneTrail;
-}
-
-void MazeSolver::outputText(std::string prompt) {
-   std::cout << prompt << std::endl;
+   return clone;
 }

@@ -29,6 +29,7 @@ void Util::readMazeStdin(Maze maze) {
 }
 
 void Util::printMazeStdout(Maze maze, Trail* solution) {    
+    
     if (solution != nullptr && solution->size() > 0) {
         
         for (int row = 0; row < MAZE_DIM; ++row) {

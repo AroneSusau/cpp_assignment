@@ -1,8 +1,13 @@
 #! /bin/bash
 
-# Test data.
-NUM_TESTS="1 2 3 4 5 6 7 8 9 10 11 12"
-TEST_LIMIT=12
+# Author: Arone Susau
+#
+# This script was written to automate the process of running
+# all the tests found in the tests directory.
+
+# Test meta data.
+NUM_TESTS="1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16"
+TEST_LIMIT=16
 SUCCESS_COUNT=0
 
 # Check if MazeSolver exists.
@@ -12,6 +17,7 @@ then
     # Loop through each test and run it.
     for i in $NUM_TESTS
     do
+        # Gather test file details.
         DIR="tests/t${i}"
         OUTPUT=$DIR/program.out
         EXPECTED=$DIR/expected.out

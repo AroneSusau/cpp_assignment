@@ -33,6 +33,9 @@ public:
    /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
    /*                                           */
 
+   // Deep copy constructor for trail.
+   Trail(Trail* &trail);
+
    // Returns a pointer to breadcrumb if found at location.
    Breadcrumb* find(int x, int y);
 

@@ -5,6 +5,13 @@ Trail::Trail():
    breadcrumbs()
 {}
 
+Trail::Trail(Trail* &trail) {
+   for (int i = 0; i < trail->size(); i++) {
+      Breadcrumb* b = trail->getPtr(i);
+      addCopy(b);
+   }
+}
+
 Trail::~Trail() {
    for (size_t i = 0; i < length; i++) {
       if (breadcrumbs[i] != nullptr) {
