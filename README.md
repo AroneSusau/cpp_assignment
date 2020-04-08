@@ -1,5 +1,8 @@
 # Maze Solver Assignment for COSC1076
 
+Author: Arone Susau
+Student#: S3728977
+
 * [Short Description](##Short-Description)
   * [Milestone 1](###Milestone-1)
   * [Milestone 2](###Milestone-2)
