@@ -34,11 +34,11 @@ void Util::printMazeStdout(Maze maze, Trail* solution) {
     for (int row = 0; row < MAZE_DIM; ++row) {
       for (int col = 0; col < MAZE_DIM; ++col) {
         Breadcrumb* b = solution->find(col, row);
-        bool notEmpty = b != nullptr;
-        bool notStale = !b->isStale();
+        
+        bool goodCrumb = b != nullptr && !b->isStale();
         bool notStart = maze[row][col] != 'S';
         bool notEnd = maze[row][col] != 'E';
-        bool validPath = notEmpty && notStale && notStart && notEnd;
+        bool validPath = goodCrumb && notStart && notEnd;
 
         if (validPath) {
           std::cout << ROUTE;
@@ -57,18 +57,33 @@ void Util::printMazeStdout(Maze maze, Trail* solution) {
 }
 
 void Util::printMovementDirections(Trail* solution) {
-  for (int row = 0; row < MAZE_DIM; ++row) {
-    for (int col = 0; col < MAZE_DIM; ++col) {
-      Breadcrumb* b = solution->find(col, row);
-      bool validPath = b != nullptr && !b->isStale() && maze[row][col] != 'S' &&
-                       maze[row][col] != 'E';
+  Breadcrumb* initial = solution->getPtr(0);
+  int prevX = initial->getX();
+  int prevY = initial->getY();
+  
+  for (int i = 1; i < solution->size(); ++i) {
+    Breadcrumb* current = solution->getPtr(i);
+    int currX = current->getX();
+    int currY = current->getY();
 
-      if (validPath) {
-        std::cout << ROUTE;
-      } else {
-        std::cout << maze[row][col];
-      }
+    int finalX = prevX - currX;
+    int finalY = prevY - currY;
+
+    bool movedNorth = finalX == 0 && finalY == -1;
+    bool movedEast = finalX == 1 && finalY == 0;
+    bool movedSouth = finalX == 0 && finalY == 1;
+    bool movedWest = finalX == -1 && finalY == 0;
+
+    if (movedNorth) {
+      std::cout << "North" << std::endl;
+    } else if (movedEast) {
+      std::cout << "East" << std::endl;
+    } else if (movedSouth) {
+      std::cout << "South" << std::endl;
+    } else if (movedWest) {
+      std::cout << "West" << std::endl;
+    } else {
+      std::cout << "Unexpectd Movement Direction" << std::endl;
     }
-    std::cout << std::endl;
   }
 }
