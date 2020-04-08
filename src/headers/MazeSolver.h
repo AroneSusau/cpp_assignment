@@ -57,7 +57,7 @@ private:
    bool checkNewPosition(int x, int y, Maze maze);
 
    // If trail has no breadcrumbs for our current location.
-   void addBreadcrumb(int x, int y, Breadcrumb* currentPosition); 
+   void addBreadcrumb(int x, int y, Breadcrumb* &currentPosition); 
 
    // TMP - PLEASE DELETE.
    void outputText(std::string prompt);
@@ -66,7 +66,7 @@ private:
    void resetsSolution();
 
    // Sets first trail breadcrumb to S position.
-   void setStartingPosition(Maze maze, Breadcrumb* position);
+   void setStartingPosition(Maze maze, Breadcrumb* &position);
 
 };
 

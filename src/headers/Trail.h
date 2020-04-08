@@ -33,6 +33,9 @@ public:
    /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
    /*                                           */
 
+   // Returns a pointer to breadcrumb if found at location.
+   Breadcrumb* find(int x, int y);
+
 private:
    /*                                           */
    /* DO NOT MOFIFY ANY CODE IN THIS SECTION    */
