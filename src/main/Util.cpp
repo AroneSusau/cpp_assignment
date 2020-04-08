@@ -6,45 +6,55 @@
 #include "../headers/Trail.h"
 #include "../headers/Types.h"
 #include "../headers/Breadcrumb.h"
+#include "../headers/milestone4.h"
 
 Util::Util() {}
 Util::~Util() {}
 
-void Util::readMazeStdin(Maze maze) {
-  char placeholder = ' ';
+void Util::readMazeStdin(MazeManager* mazeManager) {
 
-  for (int row = 0; row < MAZE_DIM; ++row) {
-    for (int col = 0; col < MAZE_DIM; ++col) {
-      if (!std::cin.eof()) {
-        std::cin >> maze[row][col];
-      }
-    }
+  int row = 1;
+  int col = 1;
+
+  std::string tmp = "";
+
+  while(!std::cin.eof()) {
+    char c;
+    std::cin.get(c);
+
+    if (c == '\n') {      
+      ++row;
+      col = -1;
+    } else {
+      tmp += c;
+      ++col;
+    } 
   }
 
-  std::cin >> placeholder;
-
-  // File is oversized if EOF hasn't been reached yet.
-  // Invalidate the maze with a bad character.
-  if (!std::cin.eof()) {
-    maze[0][0] = 'X';
-  }
+  mazeManager->updateMaze(tmp, row, col);
 }
 
-void Util::printMazeStdout(Maze maze, Trail* solution) {
-  if (solution != nullptr && solution->size() > 0) {
-    for (int row = 0; row < MAZE_DIM; ++row) {
-      for (int col = 0; col < MAZE_DIM; ++col) {
+void Util::printMazeStdout(MazeManager* mazeManager, Trail* solution) {
+
+  bool solutionExits = solution != nullptr && solution->size() > 0;
+  
+  if (solutionExits) {
+
+    for (int row = 0; row < mazeManager->getRows(); ++row) {
+      for (int col = 0; col < mazeManager->getColumns(); ++col) {
+        
         Breadcrumb* b = solution->find(col, row);
+        char character = mazeManager->getValue(row, col);
         
         bool goodCrumb = b != nullptr && !b->isStale();
-        bool notStart = maze[row][col] != 'S';
-        bool notEnd = maze[row][col] != 'E';
+        bool notStart = character != 'S';
+        bool notEnd = character != 'E';
         bool validPath = goodCrumb && notStart && notEnd;
 
         if (validPath) {
           std::cout << ROUTE;
         } else {
-          std::cout << maze[row][col];
+          std::cout << character;
         }
       }
       std::cout << std::endl;
@@ -55,6 +65,7 @@ void Util::printMazeStdout(Maze maze, Trail* solution) {
   } else {
     std::cout << "ERROR: Invalid maze passed in." << std::endl;
   }
+
 }
 
 void Util::printMovementDirections(Trail* solution) {

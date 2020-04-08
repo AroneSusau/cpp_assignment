@@ -3,9 +3,16 @@
 
 #include "../headers/Trail.h"
 #include "../headers/Types.h"
+#include "../headers/Breadcrumb.h"
+#include "../headers/milestone4.h"
 
-MazeSolver::MazeSolver()
-    : solution(new Trail()), position(nullptr), x(0), y(0), error(false) {}
+MazeSolver::MazeSolver(): 
+  solution(nullptr), 
+  position(nullptr), 
+  x(0), 
+  y(0), 
+  error(false) 
+{}
 
 MazeSolver::~MazeSolver() {
   if (solution != nullptr) {
@@ -14,31 +21,40 @@ MazeSolver::~MazeSolver() {
   }
 }
 
-void MazeSolver::solve(Maze maze) {
-  validateStartingPositions(maze);
-  validateCharacters(maze);
+void MazeSolver::solve(MazeManager* mazeManager) {
+  int maxLength = mazeManager->getRows() * mazeManager->getColumns();
+  solution = new Trail(maxLength);
+
+  validateStartingPositions(mazeManager);
+  validateCharacters(mazeManager);
 
   if (!error) {
-    bool endNotReached = maze[y][x] != 'E';
+    bool endNotReached = mazeManager->getValue(y, x) != 'E';
 
-    setStartingPosition(maze);
+    setStartingPosition(mazeManager);
 
     while (endNotReached && !error) {
+      
       addBreadcrumb(x, y);
 
-      bool canMove = mazeMove(maze);
+      bool canMove = mazeMove(mazeManager);
 
       if (!canMove) {
-        startBacktracking(maze);
+        startBacktracking();
       }
 
-      endNotReached = maze[y][x] != 'E';
+      endNotReached = mazeManager->getValue(y, x) != 'E';
     }
+
+    // Add final breadcrumb.
+    if (!error) {
+      addBreadcrumb(x, y);
+    }
+
   }
 }
 
-bool MazeSolver::mazeMove(Maze maze) {
-  // Directional values in order: NORTH, SOUTH, EAST, WEST.
+bool MazeSolver::mazeMove(MazeManager* mazeManager) {
   int directions = 4;
   int xMove[] = {0, +1, 0, -1};
   int yMove[] = {-1, 0, +1, 0};
@@ -50,7 +66,7 @@ bool MazeSolver::mazeMove(Maze maze) {
   while (searching && index < directions) {
     int newX = x + xMove[index];
     int newY = y + yMove[index];
-    bool moveable = checkNewPosition(newX, newY, maze);
+    bool moveable = checkNewPosition(newX, newY, mazeManager);
 
     if (moveable) {
       x = newX;
@@ -72,7 +88,7 @@ void MazeSolver::addBreadcrumb(int x, int y) {
   }
 }
 
-void MazeSolver::startBacktracking(Maze maze) {
+void MazeSolver::startBacktracking() {
   int lastIndex = solution->size() - 1;
 
   bool searchingGoodBreadcrum = true;
@@ -103,18 +119,18 @@ void MazeSolver::startBacktracking(Maze maze) {
   }
 }
 
-void MazeSolver::validateStartingPositions(Maze maze) {
+void MazeSolver::validateStartingPositions(MazeManager* mazeManager) {
   bool startFound = false;
   bool endFound = false;
 
-  for (int row = 0; row < MAZE_DIM; ++row) {
-    for (int col = 0; col < MAZE_DIM; ++col) {
-      char point = maze[row][col];
+  for (int row = 0; row < mazeManager->getRows(); ++row) {
+    for (int col = 0; col < mazeManager->getColumns(); ++col) {
+      char point = mazeManager->getValue(row, col);
 
       if (point == 'S') {
         startFound = true;
       } else if (point == 'E') {
-        endFound = true;
+        endFound = true; 
       }
     }
   }
@@ -124,11 +140,15 @@ void MazeSolver::validateStartingPositions(Maze maze) {
   }
 }
 
-bool MazeSolver::checkNewPosition(int x, int y, Maze maze) {
-  bool xInBounds = 0 <= x && x < MAZE_DIM;
-  bool yInBounds = 0 <= y && y < MAZE_DIM;
-  bool validMazeChar =
-      maze[y][x] == OPEN || maze[y][x] == 'E' || maze[y][x] == 'S';
+bool MazeSolver::checkNewPosition(int x, int y, MazeManager* mazeManager) {
+  char character = mazeManager->getValue(y, x);
+  
+  bool xInBounds = 0 <= x && x < mazeManager->getColumns();
+  bool yInBounds = 0 <= y && y < mazeManager->getRows();
+  bool isOpen = character == OPEN;
+  bool isEnd = character == 'E';
+  bool isStart = character == 'S';
+  bool validMazeChar = isOpen || isEnd || isStart;
   bool empty = !solution->contains(x, y);
   bool result = false;
 
@@ -139,12 +159,16 @@ bool MazeSolver::checkNewPosition(int x, int y, Maze maze) {
   return result;
 }
 
-void MazeSolver::validateCharacters(Maze maze) {
-  for (int row = 0; row < MAZE_DIM; ++row) {
-    for (int col = 0; col < MAZE_DIM; ++col) {
-      char point = maze[row][col];
-      bool invalidCharacter =
-          point != 'S' && point != 'E' && point != WALL && point != OPEN;
+void MazeSolver::validateCharacters(MazeManager* mazeManager) {
+for (int row = 0; row < mazeManager->getRows(); ++row) {
+    for (int col = 0; col < mazeManager->getColumns(); ++col) {
+      char point = mazeManager->getValue(row, col);
+
+      bool notStart = point != 'S';
+      bool notEnd = point != 'E';
+      bool notWall = point != WALL;
+      bool notOpen = point != OPEN;
+      bool invalidCharacter = notStart && notEnd && notWall && notOpen;
 
       if (invalidCharacter) {
         error = true;
@@ -153,16 +177,16 @@ void MazeSolver::validateCharacters(Maze maze) {
   }
 }
 
-void MazeSolver::setStartingPosition(Maze maze) {
-  for (int row = 0; row < MAZE_DIM; ++row) {
-    for (int col = 0; col < MAZE_DIM; ++col) {
-      char point = maze[row][col];
+void MazeSolver::setStartingPosition(MazeManager* mazeManager) {
+  for (int row = 0; row < mazeManager->getRows(); ++row) {
+    for (int col = 0; col < mazeManager->getColumns(); ++col) {
+      char point = mazeManager->getValue(row, col);
 
       if (point == 'S') {
         Breadcrumb* b = new Breadcrumb(col, row, false);
+        position = b;
 
         solution->addCopy(b);
-        position = b;
         x = position->getX();
         y = position->getY();
       }
@@ -170,11 +194,13 @@ void MazeSolver::setStartingPosition(Maze maze) {
   }
 }
 
-Trail* MazeSolver::getSolution() {
+Trail* MazeSolver::getSolution(MazeManager* mazeManager) {
   Trail* clone = nullptr;
 
   if (solution != nullptr) {
-    clone = new Trail(solution);
+    int maxLength = mazeManager->getRows() * mazeManager->getColumns();
+
+    clone = new Trail(solution, maxLength);
   }
 
   return clone;

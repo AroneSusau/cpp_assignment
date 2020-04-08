@@ -32,8 +32,11 @@ class Trail {
   /* YOU MAY ADD YOUR MODIFICATIONS HERE       */
   /*                                           */
 
+  // Constructor/Desctructor.
+  Trail(int maxLength);
+
   // Deep copy constructor for trail.
-  Trail(Trail*& trail);
+  Trail(Trail* &trail, int maxLength);
 
   // Returns a pointer to breadcrumb if found at location.
   Breadcrumb* find(int x, int y);
@@ -45,7 +48,7 @@ class Trail {
 
   // Trail of breadcrumb objects
   // You may assume a fixed size for M1 & M2
-  Breadcrumb* breadcrumbs[TRAIL_ARRAY_MAX_SIZE];
+  Breadcrumb** breadcrumbs;
 
   // Number of breadcrumbs currently in the trail
   int length;

@@ -1,13 +1,32 @@
 
 #include "../headers/Trail.h"
+#include "../headers/Breadcrumb.h"
 
-Trail::Trail() : breadcrumbs() {}
+Trail::Trail() : 
+  breadcrumbs(nullptr)
+{}
 
-Trail::Trail(Trail*& trail) {
+Trail::Trail(int maxLength) : 
+  breadcrumbs(new Breadcrumb*[maxLength])
+{}
+
+Trail::Trail(Trail* &trail, int maxLength) {
+  
+  breadcrumbs = new Breadcrumb*[maxLength];
+  length = 0;
+
   for (int i = 0; i < trail->size(); i++) {
     Breadcrumb* b = trail->getPtr(i);
-    addCopy(b);
+    Breadcrumb* cloneBreadcrumb =
+      new Breadcrumb(
+        b->getX(), 
+        b->getY(), 
+        b->isStale());
+  
+  breadcrumbs[length] = cloneBreadcrumb;
+  length += 1;
   }
+
 }
 
 Trail::~Trail() {
@@ -17,6 +36,8 @@ Trail::~Trail() {
       breadcrumbs[i] = nullptr;
     }
   }
+
+  delete[] breadcrumbs;
 }
 
 Breadcrumb* Trail::find(int x, int y) {
@@ -38,8 +59,11 @@ Breadcrumb* Trail::find(int x, int y) {
 
 void Trail::addCopy(Breadcrumb* t) {
   Breadcrumb* cloneBreadcrumb =
-      new Breadcrumb(t->getX(), t->getY(), t->isStale());
-
+      new Breadcrumb(
+        t->getX(), 
+        t->getY(), 
+        t->isStale());
+  
   breadcrumbs[length] = cloneBreadcrumb;
   length += 1;
 }

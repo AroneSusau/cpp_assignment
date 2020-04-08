@@ -1,6 +1,6 @@
 vpath %.cpp src/main
 
-OBJECTS = main.o Util.o Tests.o MazeSolver.o Trail.o Breadcrumb.o
+OBJECTS = main.o Util.o Tests.o MazeSolver.o Trail.o Breadcrumb.o MazeManager.o
 
 .default: all
 
