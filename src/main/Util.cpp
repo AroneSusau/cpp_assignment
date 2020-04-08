@@ -59,9 +59,6 @@ void Util::printMazeStdout(MazeManager* mazeManager, Trail* solution) {
       }
       std::cout << std::endl;
     }
-
-    printMovementDirections(solution);
-
   } else {
     std::cout << "ERROR: Invalid maze passed in." << std::endl;
   }
@@ -70,13 +67,16 @@ void Util::printMazeStdout(MazeManager* mazeManager, Trail* solution) {
 
 void Util::printMovementDirections(Trail* solution) {
 
-  std::cout << "Movement Directions" << std::endl;
-
-  Breadcrumb* initial = solution->getPtr(0);
-  int prevX = initial->getX();
-  int prevY = initial->getY();
+  bool solutionExits = solution != nullptr && solution->size() > 0;
   
-  for (int i = 1; i < solution->size(); ++i) {
+  if (solutionExits) {
+    std::cout << "Movement Directions" << std::endl;
+
+    Breadcrumb* initial = solution->getPtr(0);
+    int prevX = initial->getX();
+    int prevY = initial->getY();
+
+    for (int i = 1; i < solution->size(); ++i) {
     Breadcrumb* current = solution->getPtr(i);
     
     if (current != nullptr && !current->isStale()) {
@@ -105,7 +105,7 @@ void Util::printMovementDirections(Trail* solution) {
 
       prevX = currX;
       prevY = currY;
+      }
     }
-
   }
 }

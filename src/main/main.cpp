@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
 
   // Print Maze to stdout
   util->printMazeStdout(mazeManager, solution);
+  util->printMovementDirections(solution);
 
   delete solver;
   delete util;
