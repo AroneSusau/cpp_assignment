@@ -3,11 +3,13 @@
 #include "../headers/Breadcrumb.h"
 
 Trail::Trail() : 
-  breadcrumbs(nullptr)
+  breadcrumbs(nullptr),
+  length(0)
 {}
 
 Trail::Trail(int maxLength) : 
-  breadcrumbs(new Breadcrumb*[maxLength])
+  breadcrumbs(new Breadcrumb*[maxLength]),
+  length(0)
 {}
 
 Trail::Trail(Trail* &trail, int maxLength) {
@@ -30,7 +32,7 @@ Trail::Trail(Trail* &trail, int maxLength) {
 }
 
 Trail::~Trail() {
-  for (size_t i = 0; i < length; i++) {
+  for (int i = 0; i < length; i++) {
     if (breadcrumbs[i] != nullptr) {
       delete breadcrumbs[i];
       breadcrumbs[i] = nullptr;
